@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+const path = require('path');
 
-app.get('/', (req, res) => {
-  res.send('Hello World from DevOps CI/CD Platform!');
-});
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'UP' });
