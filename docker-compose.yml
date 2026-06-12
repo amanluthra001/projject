@@ -14,7 +14,7 @@ services:
     restart: always
 
   jenkins:
-    image: jenkins/jenkins:lts
+    build: ./jenkins
     container_name: jenkins
     user: root
     privileged: true
