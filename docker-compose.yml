@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - jenkins
+      - grafana
+    restart: always
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    user: root
+    privileged: true
+    ports:
+      - "8080:8080" 
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      # Mount the Docker socket so Jenkins can build Docker images on your host
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    restart: always
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3001:3000" 
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: always
+
+volumes:
+  jenkins_home:
+  prometheus_data:
+  grafana_data:
