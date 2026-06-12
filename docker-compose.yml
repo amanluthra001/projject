@@ -10,7 +10,6 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - jenkins
-      - grafana
     restart: always
 
   jenkins:
@@ -36,16 +35,8 @@ services:
       - prometheus_data:/prometheus
     restart: always
 
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3001:3000" 
-    volumes:
-      - grafana_data:/var/lib/grafana
-    restart: always
+
 
 volumes:
   jenkins_home:
   prometheus_data:
-  grafana_data:
